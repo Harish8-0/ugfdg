@@ -1,0 +1,33 @@
+module pipo_register_tb;
+    reg clk, reset;
+    reg [3:0] a;
+    wire [3:0] b;
+    
+    pipo_register dut(clk,reset,a,b);
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;
+    end
+    
+    initial begin
+        $monitor("Time=%0t reset=%b a=%b b=%b", 
+                 $time, reset, a, b);
+        reset = 1;
+        a = 4'b1010;
+        #10
+        reset = 0;
+        a = 4'b1010; #10
+        a = 4'b1111; #10
+        a = 4'b0000; #10
+        a = 4'b1010;
+        reset = 1; #10
+        reset = 0;
+        a = 4'b0101; #10
+        $finish;
+    end
+    initial begin
+        $dumpfile("pipo_register_tb.vcd");
+        $dumpvars(0,pipo_register_tb);
+    end
+
+endmodule
